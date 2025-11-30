@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.todo_simplified.data.Task
 
 @Dao
@@ -18,4 +19,8 @@ interface TaskDao {
 
     @Delete
     suspend fun deleteTask(task: Task)
+
+    //update task (mark as done)
+    @Update
+    suspend fun updateTask(task: Task)
 }

@@ -30,4 +30,11 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             repository.deleteTask(task)
         }
     }
+
+    fun toggleDone(task: Task) {
+        viewModelScope.launch {
+            val updated = task.copy(isDone = !task.isDone)
+            repository.updateTask(updated)
+        }
+    }
 }

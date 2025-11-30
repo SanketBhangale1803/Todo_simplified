@@ -12,7 +12,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.example.todo_simplified.data.Task
 import androidx.compose.foundation.lazy.items
-
+import androidx.compose.ui.text.style.TextDecoration
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +51,11 @@ fun TodoApp(viewModel: TaskViewModel) {
 
             LazyColumn {
                 items(tasks) { task ->
-                    TaskItem(task = task, onDelete = { viewModel.deleteTask(task) })
+                    TaskItem(
+                        task = task,
+                        onDelete = { viewModel.deleteTask(task) },
+                        onToggle = { viewModel.toggleDone(task) }
+                    )
                 }
             }
         }
@@ -59,7 +63,7 @@ fun TodoApp(viewModel: TaskViewModel) {
 }
 
 @Composable
-fun TaskItem(task: Task, onDelete: () -> Unit) {
+fun TaskItem(task: Task, onDelete: () -> Unit, onToggle: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -72,7 +76,21 @@ fun TaskItem(task: Task, onDelete: () -> Unit) {
                 .padding(12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(task.title)
+            Row {
+                Checkbox(
+                    checked = task.isDone,
+                    onCheckedChange = { onToggle() }
+                )
+
+                Text(
+                    text = task.title,
+                    textDecoration = if (task.isDone)
+                        TextDecoration.LineThrough
+                    else
+                        TextDecoration.None
+                )
+            }
+
             TextButton(onClick = onDelete) { Text("Delete") }
         }
     }
