@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.simplemvvm.data.TaskDao
 
-@Database(entities = [Task::class], version = 1)
+@Database(entities = [Task::class], version = 2)
 abstract class TaskDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
 
@@ -19,7 +19,9 @@ abstract class TaskDatabase : RoomDatabase() {
                     context.applicationContext,
                     TaskDatabase::class.java,
                     "task_db"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // avoid migration crash
+                    .build()
             }
             return INSTANCE!!
         }

@@ -37,4 +37,9 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             repository.updateTask(updated)
         }
     }
+    fun addTask(title: String, deadline: Long?){
+        viewModelScope.launch {
+            repository.addTask(Task(title = title, deadline = deadline))
+        }
+    }
 }
